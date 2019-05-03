@@ -1,0 +1,16 @@
+properties:
+  view1:
+    type: element
+    title: Liquid View 1
+    xtype: at-core-view
+    actionListeners:
+      - _all
+    modelRoot: state.model
+    view: |-
+      <div class="mr mtsm" class="action" at-click-action="select" data-key="{{ item.ytvideoId }}" >
+      	<iron-image sizing="cover" alt="{{ item.title }}" width="105" height="80" src="http://i3.ytimg.com/vi/{{ item.ytvideoId }}/maxresdefault.jpg"></iron-image>
+      	<span class="font-body2"><at-carbon-clamp lines="2">{{ item.title }}</at-carbon-clamp></span>
+      </div>
+rules: []
+$meta: {}
+$type: card

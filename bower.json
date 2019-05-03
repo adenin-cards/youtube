@@ -1,0 +1,8 @@
+{
+  "name": "youtube-channel",
+  "version": "0.0.1.23",
+  "private": true,
+  "dependencies": {
+    "polymer": "Polymer/polymer#master"
+  }
+}

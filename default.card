@@ -1,0 +1,102 @@
+$type: card
+rules: []
+properties:
+  title:
+    type: element
+    xtype: at-carbon-card-title
+    title: YouTube Channel
+    xgridcols: 12
+    xstyle: 
+    xclass: 
+    actionListeners:
+      - _start
+  view3:
+    type: element
+    title: Liquid View 3
+    xtype: at-core-view
+    actionListeners:
+      - _all
+    modelRoot: state.model
+    view: |-
+      <div class="container layout-vertical layout-center-justified m"> 
+        <at-carbon-video id="mainVid" src="{{selected.link}}"></at-carbon-video> 
+        <div class="mt layout-vertical">
+          <div class="font-subhead">{{ selected.title }}</div>    
+        </div>
+      </div>
+  carousel3:
+    type: at-core-carousel
+    title: Carousel 3
+    actionListeners:
+      - _all
+    mode: bound
+    modelRoot: state.model.gallery
+    itemComponent: video.card
+    emptyList: No videos found
+    cardWidth: !!int 145
+    xclass: expanded-only
+  footer4:
+    type: element
+    title: View All Videos
+    xtype: at-carbon-card-footer
+    xgridcols: 12
+    expandable: !!bool true
+    href: https://www.youtube.com/channel/UCnqPPzQ5YVUMeQFFV7fPtlg
+$meta:
+  cardId: !!int 8
+  preview-data: |-
+    {  
+      "url": "http://www.nowassistant.com",
+      "title": "Home"
+    }
+  preview-mode: static
+  preview-container: event
+  search-term: 
+  service-url: 
+  xclass: 
+  xstyle: 
+  code: |-
+    action.initialize = function(state) {
+      state.model.activeId = "";
+
+      // select first video by default
+      if (state.model.items.length > 0) state.model.activeId = state.model.items[0].ytvideoId;
+
+      selectActive(state.model);
+    }
+
+    // split items[] into selected video and gallery items
+    function selectActive(model) {
+      // initialize .selected video and .gallery videos
+      model.selected = null;
+      model.gallery = {items: []};
+
+    	// check if current active video has been set
+      if (model.activeId) {
+        let i=0;
+
+    		// only display 5 videos or less at a time
+        let cnt = model.items.length > 5 ? 5 : model.items.length;
+
+    		// loop through the 5 first videos in the response 
+        for (i = 0; i <= cnt; i++) {
+          var video = model.items[i];
+
+          if (video.ytvideoId == model.activeId) {
+            // copy the selected video
+            model.selected = video;
+          } else {
+            // add other videos to .gallery
+            model.gallery.items.push(video);
+          }
+        }
+      }
+    }
+
+    action.select = function(evt) {
+      // select active video when clicked node has a data-key attribute
+      if (evt.args.dataKey) {
+        evt.model.activeId = evt.args.dataKey;
+        selectActive(evt.model);
+      }
+    }
